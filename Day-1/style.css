@@ -168,17 +168,33 @@ a{ text-decoration:none; color:inherit; }
   color: #111;
 }
 
-.grid-container{
-  width: 100%;
-  max-width: 1150px;
-
+/* Outer wrapper: a single-column grid that centers every row as one
+   unified block, so all three rows share the same horizontal center
+   as the hero boxes above and below this section. */
+.grid-wrap{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(176px, 218px);
+  grid-template-columns: 1fr;
+  justify-items: center;
+  row-gap: 24px;
+  width: 100%;
+}
+
+/* Each row is its own grid with explicit column tracks that match the
+   exact box widths for that row's pattern. Every row totals the same
+   width (1108px), so all rows line up perfectly and stay centered
+   as a group instead of drifting. */
+.grid-row{
+  display: grid;
   gap: 24px;
+  width: 100%;
+  max-width: 1108px;
   align-items: center;
   justify-items: center;
 }
+
+.row1{ grid-template-columns: 217px 301px 301px 217px; }
+.row2{ grid-template-columns: 301px 217px 301px 217px; }
+.row3{ grid-template-columns: 217px 301px 217px 301px; }
 
 .g-box{
   background: var(--card-bg);
@@ -187,16 +203,13 @@ a{ text-decoration:none; color:inherit; }
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
 }
 
 .g-box.sq{
-  width: min(217px, 100%);
   aspect-ratio: 217 / 218;
 }
 
 .g-box.wide{
-  width: min(301px, 100%);
   aspect-ratio: 301 / 176;
 }
 
@@ -243,8 +256,16 @@ a{ text-decoration:none; color:inherit; }
   .nav-brand{ font-size: 18px; }
   .nav-links a{ font-size: 18px; }
 
-  .grid-container{
-    grid-template-columns: repeat(2, 1fr);
+  .grid-row,
+  .row1, .row2, .row3{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 640px;
+  }
+
+  .g-box.sq,
+  .g-box.wide{
+    width: 100%;
+    aspect-ratio: 217 / 218;
   }
 }
 
@@ -263,10 +284,14 @@ a{ text-decoration:none; color:inherit; }
 
   .small-box{ width: min(217px, 38vw); }
 
-  .grid-container{
-    grid-template-columns: repeat(2, 1fr);
+  .grid-row,
+  .row1, .row2, .row3{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
+    max-width: 420px;
   }
+
+  .grid-wrap{ row-gap: 16px; }
 
   .footer{ padding: 0 20px; }
   .footer-content{ font-size: 18px; text-align:center; }
